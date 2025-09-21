@@ -1,0 +1,12 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Data files
+email_*.html
+email_*.txt
+progress_data.json
+
+# Config with credentials
+config.py
