@@ -1,11 +1,19 @@
 # Email Parser Component
 
-Searches and retrieves progress emails from Synthesis Tutor.
+Searches and retrieves progress emails and session emails from Synthesis Tutor.
 
 ## Features
 - Connects to IMAP server
 - Searches for emails from `no-reply@tutor.synthesis.com`
-- Filters for "Zoey's progress with Synthesis Tutor" subject
+- Parses two types of emails:
+  - **Weekly Progress Reports**: "Zoey's progress with Synthesis Tutor"
+    - Daily Active Minutes table (7-day breakdown)
+    - Games played with durations
+    - Lessons in progress
+  - **Daily Session Reports**: "Zoey's Synthesis Session: [Topic]"
+    - Day, time, and duration (e.g., "Saturday, 4:44pm - 37.8 minutes")
+    - Session topic and summary
+    - Activities completed
 - Batch fetching to handle large mailboxes efficiently
 
 ## Configuration
