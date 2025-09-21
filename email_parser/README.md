@@ -1,35 +1,45 @@
-# Email Parser Component
+# Synthesis Tracker
 
-Searches and retrieves progress emails and session emails from Synthesis Tutor.
+Extract and analyze activity data from Synthesis Tutor emails.
 
 ## Features
-- Connects to IMAP server
-- Searches for emails from `no-reply@tutor.synthesis.com`
-- Parses two types of emails:
-  - **Weekly Progress Reports**: "Zoey's progress with Synthesis Tutor"
-    - Daily Active Minutes table (7-day breakdown)
-    - Games played with durations
-    - Lessons in progress
-  - **Daily Session Reports**: "Zoey's Synthesis Session: [Topic]"
-    - Day, time, and duration (e.g., "Saturday, 4:44pm - 37.8 minutes")
-    - Session topic and summary
-    - Activities completed
-- Batch fetching to handle large mailboxes efficiently
 
-## Configuration
-Edit `config.py` with your IMAP settings:
-- `IMAP_SERVER`: Your IMAP server hostname
-- `USERNAME`: Email username
-- `PASSWORD`: Email password
+Parses two types of emails:
+- **Weekly Progress Reports**: Daily Active Minutes breakdown, games played, lessons
+- **Daily Session Reports**: Day, time, duration, and session topics
 
-## Usage
+## Setup
+
+1. Install dependencies:
 ```bash
-python3 email_search.py
+python3 -m venv venv
+source venv/bin/activate
+pip install beautifulsoup4
 ```
 
-## Found Emails
-The script identifies weekly progress reports and displays:
-- Email ID
-- Subject
-- From address
-- Date received
+2. Configure email access in `config.py`:
+```python
+IMAP_SERVER = "mail.kazer.org"
+USERNAME = "your_email@domain.com"
+PASSWORD = "your_password"
+```
+
+## Usage
+
+Run the tracker:
+```bash
+python3 synthesis_tracker.py
+```
+
+## Output
+
+Results are saved to `synthesis_data.json` containing:
+- Session details (day, time, duration, topic)
+- Weekly progress (daily minutes breakdown)
+- Summary statistics
+
+Example output:
+```
+Session Emails: 20 sessions, 650 minutes total (32.5 min average)
+Weekly Progress: 12 weeks, 1152 minutes total (96 min/week average)
+```

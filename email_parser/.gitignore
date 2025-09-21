@@ -4,12 +4,9 @@ __pycache__/
 *.pyc
 
 # Data files
+*.json
 email_*.html
 email_*.txt
-progress_data.json
-progress_data_updated.json
-session_data.json
-session_emails_list.json
 
 # Config with credentials
 config.py
