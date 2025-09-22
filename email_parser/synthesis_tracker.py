@@ -206,9 +206,9 @@ class SynthesisTracker:
                 'summary': {}
             }
 
-            # Process sessions (limit to recent 20)
+            # Process all session emails
             print("\nProcessing session emails...")
-            for email_info in sessions[:20]:
+            for email_info in sessions:
                 content = self.fetch_email(email_info['id'])
                 if content:
                     # Use the actual email date from the fetched content

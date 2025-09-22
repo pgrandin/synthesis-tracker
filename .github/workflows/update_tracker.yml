@@ -1,0 +1,69 @@
+name: Update Synthesis Tracker
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:  # Allow manual trigger
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/update_tracker.yml'
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install beautifulsoup4
+
+    - name: Create config file
+      env:
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+      run: |
+        cat > email_parser/config.py << EOF
+        IMAP_SERVER = "mail.kazer.org"
+        USERNAME = "pierre@kazer.org"
+        PASSWORD = "${EMAIL_PASSWORD}"
+        SENDER_EMAIL = "no-reply@tutor.synthesis.com"
+        SUBJECT_FILTER = "Zoey's progress with Synthesis Tutor"
+        EOF
+
+    - name: Fetch emails and update data
+      run: |
+        cd email_parser
+        python3 synthesis_tracker.py
+
+    - name: Prepare GitHub Pages deployment
+      run: |
+        # Create docs folder for GitHub Pages
+        mkdir -p docs
+
+        # Copy dashboard and data
+        cp static_dashboard.html docs/index.html
+        cp email_parser/synthesis_data.json docs/
+
+        # Update dashboard to use relative path
+        sed -i "s|'synthesis_data.json'|'./synthesis_data.json'|g" docs/index.html
+
+        # Add timestamp
+        echo "Last updated: $(date)" > docs/last_updated.txt
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
+        cname: # Add custom domain if you have one

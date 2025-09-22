@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthesis Tracker Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .last-updated {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .metric {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .metric .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .metric .label {
+            color: #64748b;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .chart-title {
+            font-size: 1.2em;
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        canvas {
+            max-height: 300px;
+        }
+        .recent-activity {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .activity-title {
+            font-size: 1.3em;
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .activity-list {
+            list-style: none;
+        }
+        .activity-item {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-date {
+            color: #64748b;
+            font-size: 0.9em;
+        }
+        .activity-minutes {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            padding: 50px;
+        }
+        .error {
+            background: #ef4444;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .info-banner {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Synthesis Tracker Dashboard</h1>
+            <div class="last-updated">Loading...</div>
+        </div>
+
+        <div id="info-banner" class="info-banner" style="display:none;"></div>
+
+        <div class="metrics" id="metrics">
+            <div class="metric">
+                <div class="value">-</div>
+                <div class="label">Weeks Tracked</div>
+            </div>
+            <div class="metric">
+                <div class="value">-</div>
+                <div class="label">Avg Weekly Minutes</div>
+            </div>
+            <div class="metric">
+                <div class="value">-</div>
+                <div class="label">Total Sessions</div>
+            </div>
+            <div class="metric">
+                <div class="value">-</div>
+                <div class="label">Avg Session Minutes</div>
+            </div>
+        </div>
+
+        <div class="charts">
+            <div class="chart-container">
+                <div class="chart-title">Weekly Activity Trend</div>
+                <canvas id="weeklyChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Most Recent Week - Daily Breakdown</div>
+                <canvas id="dailyChart"></canvas>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <div class="activity-title">Recent Activity</div>
+            <ul class="activity-list" id="activityList">
+                <li class="activity-item">Loading...</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let weeklyChart = null;
+        let dailyChart = null;
+
+        async function loadData() {
+            try {
+                // Fetch data from the same S3 bucket
+                const response = await fetch('synthesis_data.json');
+                if (!response.ok) throw new Error('Failed to load data');
+
+                const data = await response.json();
+                updateDashboard(data);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.querySelector('.last-updated').textContent = 'Error loading data';
+            }
+        }
+
+        function parseDate(dateStr) {
+            try {
+                return new Date(dateStr);
+            } catch {
+                return null;
+            }
+        }
+
+        function updateDashboard(data) {
+            // Update last updated
+            const lastUpdated = data.last_updated ? new Date(data.last_updated).toLocaleString() : 'Unknown';
+            document.querySelector('.last-updated').textContent = `Last updated: ${lastUpdated}`;
+
+            // Update metrics
+            const metrics = document.querySelectorAll('.metric .value');
+            const summary = data.summary || {};
+            metrics[0].textContent = summary.week_count || 0;
+            metrics[1].textContent = Math.round(summary.avg_weekly_minutes || 0);
+            metrics[2].textContent = summary.session_count || 0;
+            metrics[3].textContent = Math.round(summary.avg_session_minutes || 0);
+
+            // Show last activity info
+            const progress = data.progress || [];
+            if (progress.length > 0) {
+                const sortedProgress = progress.sort((a, b) => (b.email_id || 0) - (a.email_id || 0));
+                const lastWeek = sortedProgress[0];
+                if (lastWeek.total_weekly_minutes > 0) {
+                    const date = parseDate(lastWeek.date);
+                    if (date) {
+                        const banner = document.getElementById('info-banner');
+                        banner.style.display = 'block';
+                        banner.innerHTML = `📅 Last activity: Week of ${date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})} - ${lastWeek.total_weekly_minutes} minutes`;
+                    }
+                }
+            }
+
+            // Update charts
+            updateWeeklyChart(data.progress || []);
+            updateDailyChart(data.progress || []);
+
+            // Update recent activity
+            updateActivityList(data);
+        }
+
+        function updateWeeklyChart(progressData) {
+            const sorted = progressData
+                .filter(p => p.date)
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(-12); // Last 12 weeks
+
+            const labels = sorted.map(p => {
+                const date = parseDate(p.date);
+                return date ? date.toLocaleDateString('en-US', {month: 'short', day: 'numeric'}) : 'Unknown';
+            });
+
+            const values = sorted.map(p => p.total_weekly_minutes || 0);
+
+            const ctx = document.getElementById('weeklyChart').getContext('2d');
+
+            if (weeklyChart) weeklyChart.destroy();
+
+            weeklyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Minutes',
+                        data: values,
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Minutes' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateDailyChart(progressData) {
+            // Get most recent week with data
+            const sorted = progressData
+                .filter(p => p.daily_minutes)
+                .sort((a, b) => (b.email_id || 0) - (a.email_id || 0));
+
+            if (sorted.length === 0) return;
+
+            const recent = sorted[0];
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const values = days.map(day => recent.daily_minutes[day] || 0);
+
+            const ctx = document.getElementById('dailyChart').getContext('2d');
+
+            if (dailyChart) dailyChart.destroy();
+
+            dailyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: days.map(d => d.substring(0, 3)),
+                    datasets: [{
+                        label: 'Minutes',
+                        data: values,
+                        backgroundColor: values.map(v => v > 0 ? 'rgba(34, 197, 94, 0.8)' : 'rgba(203, 213, 225, 0.8)'),
+                        borderColor: values.map(v => v > 0 ? 'rgba(34, 197, 94, 1)' : 'rgba(203, 213, 225, 1)'),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Minutes' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateActivityList(data) {
+            const list = document.getElementById('activityList');
+            const items = [];
+
+            // Add recent weekly reports
+            const progress = (data.progress || [])
+                .sort((a, b) => (b.email_id || 0) - (a.email_id || 0))
+                .slice(0, 5);
+
+            progress.forEach(p => {
+                const date = parseDate(p.date);
+                if (date && p.total_weekly_minutes > 0) {
+                    items.push({
+                        date: date,
+                        text: `Week of ${date.toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}`,
+                        minutes: `${p.total_weekly_minutes} min`
+                    });
+                }
+            });
+
+            // Add recent sessions
+            const sessions = (data.sessions || [])
+                .sort((a, b) => (b.email_id || 0) - (a.email_id || 0))
+                .slice(0, 5);
+
+            sessions.forEach(s => {
+                const date = parseDate(s.date);
+                if (date && s.duration_minutes > 0) {
+                    items.push({
+                        date: date,
+                        text: `${s.day || 'Session'} at ${s.time || ''}`,
+                        minutes: `${Math.round(s.duration_minutes)} min`
+                    });
+                }
+            });
+
+            // Sort by date
+            items.sort((a, b) => b.date - a.date);
+
+            // Render list
+            if (items.length === 0) {
+                list.innerHTML = '<li class="activity-item">No recent activity</li>';
+            } else {
+                list.innerHTML = items.slice(0, 10).map(item => `
+                    <li class="activity-item">
+                        <div>
+                            <div>${item.text}</div>
+                            <div class="activity-date">${item.date.toLocaleDateString()}</div>
+                        </div>
+                        <div class="activity-minutes">${item.minutes}</div>
+                    </li>
+                `).join('');
+            }
+        }
+
+        // Load data on page load
+        loadData();
+
+        // Reload every 5 minutes
+        setInterval(loadData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
