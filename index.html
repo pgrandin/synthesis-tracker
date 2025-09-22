@@ -166,7 +166,7 @@
                 <div class="label">Pace vs Target</div>
             </div>
             <div class="metric" style="border-left: 4px solid #8b5cf6;">
-                <div class="value" id="weeklyTarget">120</div>
+                <div class="value" id="weeklyTarget">60</div>
                 <div class="label">Weekly Target</div>
             </div>
         </div>
@@ -234,7 +234,7 @@
             paceEl.textContent = `${Math.round(pacePercent)}%`;
             paceEl.style.color = pacePercent >= 100 ? '#22c55e' : pacePercent >= 75 ? '#f59e0b' : '#ef4444';
 
-            document.getElementById('weeklyTarget').textContent = `${summary.target_weekly_minutes || 120} min`;
+            document.getElementById('weeklyTarget').textContent = `${summary.target_weekly_minutes || 60} min`;
 
             // Show last activity info
             const progress = data.progress || [];
@@ -276,15 +276,8 @@
             });
 
             const actualValues = sorted.map(p => p.total_weekly_minutes || 0);
-            const targetValues = sorted.map(() => summary.target_weekly_minutes || 120);
-            const stretchValues = sorted.map(() => summary.stretch_weekly_minutes || 150);
-
-            // Add projection for next week
-            labels.push('Next Week (Projected)');
-            const projectedValue = summary.last_4_weeks_avg || 0;
-            actualValues.push(projectedValue);
-            targetValues.push(summary.target_weekly_minutes || 120);
-            stretchValues.push(summary.stretch_weekly_minutes || 150);
+            const targetValues = sorted.map(() => summary.target_weekly_minutes || 60);
+            const stretchValues = sorted.map(() => summary.stretch_weekly_minutes || 80);
 
             const ctx = document.getElementById('progressChart').getContext('2d');
 
@@ -303,15 +296,12 @@
                             borderWidth: 2,
                             fill: true,
                             tension: 0.4,
-                            pointRadius: actualValues.map((v, i) => i === actualValues.length - 1 ? 6 : 4),
-                            pointBackgroundColor: actualValues.map((v, i) =>
-                                i === actualValues.length - 1 ? 'rgba(139, 92, 246, 1)' : 'rgba(59, 130, 246, 1)'
-                            ),
-                            pointBorderWidth: actualValues.map((v, i) => i === actualValues.length - 1 ? 2 : 1),
-                            borderDash: actualValues.map((v, i) => i === actualValues.length - 1 ? [5, 5] : [])
+                            pointRadius: 4,
+                            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                            pointBorderWidth: 1
                         },
                         {
-                            label: 'Target (17 min/day)',
+                            label: 'Target (60 min/week)',
                             data: targetValues,
                             backgroundColor: 'rgba(34, 197, 94, 0.1)',
                             borderColor: 'rgba(34, 197, 94, 1)',
@@ -321,7 +311,7 @@
                             pointRadius: 0
                         },
                         {
-                            label: 'Stretch Goal (21 min/day)',
+                            label: 'Stretch Goal (80 min/week)',
                             data: stretchValues,
                             backgroundColor: 'rgba(251, 191, 36, 0.1)',
                             borderColor: 'rgba(251, 191, 36, 1)',
@@ -345,8 +335,7 @@
                                 label: function(context) {
                                     const label = context.dataset.label || '';
                                     const value = Math.round(context.parsed.y);
-                                    const isProjection = context.dataIndex === context.dataset.data.length - 1 && context.datasetIndex === 0;
-                                    return `${label}: ${value} minutes${isProjection ? ' (projected)' : ''}`;
+                                    return `${label}: ${value} minutes`;
                                 }
                             }
                         }
@@ -355,7 +344,7 @@
                         y: {
                             beginAtZero: true,
                             title: { display: true, text: 'Minutes per Week' },
-                            suggestedMax: 200
+                            suggestedMax: 180
                         }
                     }
                 }
