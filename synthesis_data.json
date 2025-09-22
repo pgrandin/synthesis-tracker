@@ -491,7 +491,13 @@
     "session_count": 29,
     "total_weekly_minutes": 1152,
     "avg_weekly_minutes": 96.0,
-    "week_count": 12
+    "week_count": 12,
+    "last_4_weeks_avg": 100.5,
+    "last_7_days_total": 38,
+    "last_7_days_avg": 5.428571428571429,
+    "target_weekly_minutes": 210,
+    "target_monthly_minutes": 840,
+    "current_pace_vs_target": 47.85714285714286
   },
-  "last_updated": "2025-09-22T01:57:55.799826"
+  "last_updated": "2025-09-22T02:09:10.776738"
 }

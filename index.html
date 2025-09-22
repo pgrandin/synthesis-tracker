@@ -146,22 +146,28 @@
 
         <div id="info-banner" class="info-banner" style="display:none;"></div>
 
+        <!-- Progress vs Target Chart (Most Important) -->
+        <div class="chart-container" style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px;">
+            <div class="chart-title">📊 Progress vs Target (30 min/day goal)</div>
+            <canvas id="progressChart" style="max-height: 250px;"></canvas>
+        </div>
+
         <div class="metrics" id="metrics">
-            <div class="metric">
-                <div class="value">-</div>
-                <div class="label">Weeks Tracked</div>
+            <div class="metric" style="border-left: 4px solid #22c55e;">
+                <div class="value" id="last7days">-</div>
+                <div class="label">Last 7 Days Total</div>
             </div>
-            <div class="metric">
-                <div class="value">-</div>
-                <div class="label">Avg Weekly Minutes</div>
+            <div class="metric" style="border-left: 4px solid #3b82f6;">
+                <div class="value" id="last4weeks">-</div>
+                <div class="label">4-Week Average</div>
             </div>
-            <div class="metric">
-                <div class="value">-</div>
-                <div class="label">Total Sessions</div>
+            <div class="metric" style="border-left: 4px solid #f59e0b;">
+                <div class="value" id="paceVsTarget">-</div>
+                <div class="label">Pace vs Target</div>
             </div>
-            <div class="metric">
-                <div class="value">-</div>
-                <div class="label">Avg Session Minutes</div>
+            <div class="metric" style="border-left: 4px solid #8b5cf6;">
+                <div class="value" id="weeklyTarget">210</div>
+                <div class="label">Weekly Target</div>
             </div>
         </div>
 
@@ -187,6 +193,7 @@
     <script>
         let weeklyChart = null;
         let dailyChart = null;
+        let progressChart = null;
 
         async function loadData() {
             try {
@@ -216,12 +223,18 @@
             document.querySelector('.last-updated').textContent = `Last updated: ${lastUpdated}`;
 
             // Update metrics
-            const metrics = document.querySelectorAll('.metric .value');
             const summary = data.summary || {};
-            metrics[0].textContent = summary.week_count || 0;
-            metrics[1].textContent = Math.round(summary.avg_weekly_minutes || 0);
-            metrics[2].textContent = summary.session_count || 0;
-            metrics[3].textContent = Math.round(summary.avg_session_minutes || 0);
+
+            // Update new key metrics
+            document.getElementById('last7days').textContent = `${Math.round(summary.last_7_days_total || 0)} min`;
+            document.getElementById('last4weeks').textContent = `${Math.round(summary.last_4_weeks_avg || 0)} min/wk`;
+
+            const pacePercent = summary.current_pace_vs_target || 0;
+            const paceEl = document.getElementById('paceVsTarget');
+            paceEl.textContent = `${Math.round(pacePercent)}%`;
+            paceEl.style.color = pacePercent >= 100 ? '#22c55e' : pacePercent >= 75 ? '#f59e0b' : '#ef4444';
+
+            document.getElementById('weeklyTarget').textContent = `${summary.target_weekly_minutes || 210} min`;
 
             // Show last activity info
             const progress = data.progress || [];
@@ -239,11 +252,102 @@
             }
 
             // Update charts
+            updateProgressChart(data);
             updateWeeklyChart(data.progress || []);
             updateDailyChart(data.progress || []);
 
             // Update recent activity
             updateActivityList(data);
+        }
+
+        function updateProgressChart(data) {
+            const summary = data.summary || {};
+            const progress = data.progress || [];
+
+            // Get last 8 weeks of data
+            const sorted = progress
+                .filter(p => p.date)
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(-8);
+
+            const labels = sorted.map(p => {
+                const date = parseDate(p.date);
+                return date ? date.toLocaleDateString('en-US', {month: 'short', day: 'numeric'}) : 'Unknown';
+            });
+
+            const actualValues = sorted.map(p => p.total_weekly_minutes || 0);
+            const targetValues = sorted.map(() => summary.target_weekly_minutes || 210);
+
+            // Add projection for next week
+            labels.push('Next Week (Projected)');
+            const projectedValue = summary.last_4_weeks_avg || 0;
+            actualValues.push(projectedValue);
+            targetValues.push(summary.target_weekly_minutes || 210);
+
+            const ctx = document.getElementById('progressChart').getContext('2d');
+
+            if (progressChart) progressChart.destroy();
+
+            progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Actual Minutes',
+                            data: actualValues,
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: actualValues.map((v, i) => i === actualValues.length - 1 ? 6 : 4),
+                            pointBackgroundColor: actualValues.map((v, i) =>
+                                i === actualValues.length - 1 ? 'rgba(139, 92, 246, 1)' : 'rgba(59, 130, 246, 1)'
+                            ),
+                            pointBorderWidth: actualValues.map((v, i) => i === actualValues.length - 1 ? 2 : 1),
+                            borderDash: actualValues.map((v, i) => i === actualValues.length - 1 ? [5, 5] : [])
+                        },
+                        {
+                            label: 'Target (30 min/day)',
+                            data: targetValues,
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            borderColor: 'rgba(34, 197, 94, 1)',
+                            borderWidth: 2,
+                            borderDash: [10, 5],
+                            fill: false,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = Math.round(context.parsed.y);
+                                    const isProjection = context.dataIndex === context.dataset.data.length - 1 && context.datasetIndex === 0;
+                                    return `${label}: ${value} minutes${isProjection ? ' (projected)' : ''}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Minutes per Week' },
+                            suggestedMax: 300
+                        }
+                    }
+                }
+            });
         }
 
         function updateWeeklyChart(progressData) {
