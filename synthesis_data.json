@@ -495,9 +495,11 @@
     "last_4_weeks_avg": 100.5,
     "last_7_days_total": 38,
     "last_7_days_avg": 5.428571428571429,
-    "target_weekly_minutes": 210,
-    "target_monthly_minutes": 840,
-    "current_pace_vs_target": 47.85714285714286
+    "target_weekly_minutes": 120,
+    "stretch_weekly_minutes": 150,
+    "target_monthly_minutes": 480,
+    "current_pace_vs_target": 83.75,
+    "current_pace_vs_stretch": 67.0
   },
-  "last_updated": "2025-09-22T02:09:10.776738"
+  "last_updated": "2025-09-22T02:42:45.955610"
 }

@@ -148,7 +148,7 @@
 
         <!-- Progress vs Target Chart (Most Important) -->
         <div class="chart-container" style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px;">
-            <div class="chart-title">📊 Progress vs Target (30 min/day goal)</div>
+            <div class="chart-title">📊 Weekly Practice Progress</div>
             <canvas id="progressChart" style="max-height: 250px;"></canvas>
         </div>
 
@@ -166,7 +166,7 @@
                 <div class="label">Pace vs Target</div>
             </div>
             <div class="metric" style="border-left: 4px solid #8b5cf6;">
-                <div class="value" id="weeklyTarget">210</div>
+                <div class="value" id="weeklyTarget">120</div>
                 <div class="label">Weekly Target</div>
             </div>
         </div>
@@ -234,7 +234,7 @@
             paceEl.textContent = `${Math.round(pacePercent)}%`;
             paceEl.style.color = pacePercent >= 100 ? '#22c55e' : pacePercent >= 75 ? '#f59e0b' : '#ef4444';
 
-            document.getElementById('weeklyTarget').textContent = `${summary.target_weekly_minutes || 210} min`;
+            document.getElementById('weeklyTarget').textContent = `${summary.target_weekly_minutes || 120} min`;
 
             // Show last activity info
             const progress = data.progress || [];
@@ -276,13 +276,15 @@
             });
 
             const actualValues = sorted.map(p => p.total_weekly_minutes || 0);
-            const targetValues = sorted.map(() => summary.target_weekly_minutes || 210);
+            const targetValues = sorted.map(() => summary.target_weekly_minutes || 120);
+            const stretchValues = sorted.map(() => summary.stretch_weekly_minutes || 150);
 
             // Add projection for next week
             labels.push('Next Week (Projected)');
             const projectedValue = summary.last_4_weeks_avg || 0;
             actualValues.push(projectedValue);
-            targetValues.push(summary.target_weekly_minutes || 210);
+            targetValues.push(summary.target_weekly_minutes || 120);
+            stretchValues.push(summary.stretch_weekly_minutes || 150);
 
             const ctx = document.getElementById('progressChart').getContext('2d');
 
@@ -309,12 +311,22 @@
                             borderDash: actualValues.map((v, i) => i === actualValues.length - 1 ? [5, 5] : [])
                         },
                         {
-                            label: 'Target (30 min/day)',
+                            label: 'Target (17 min/day)',
                             data: targetValues,
                             backgroundColor: 'rgba(34, 197, 94, 0.1)',
                             borderColor: 'rgba(34, 197, 94, 1)',
                             borderWidth: 2,
                             borderDash: [10, 5],
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Stretch Goal (21 min/day)',
+                            data: stretchValues,
+                            backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                            borderColor: 'rgba(251, 191, 36, 1)',
+                            borderWidth: 1,
+                            borderDash: [5, 3],
                             fill: false,
                             pointRadius: 0
                         }
@@ -343,7 +355,7 @@
                         y: {
                             beginAtZero: true,
                             title: { display: true, text: 'Minutes per Week' },
-                            suggestedMax: 300
+                            suggestedMax: 200
                         }
                     }
                 }
