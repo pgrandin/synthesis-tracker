@@ -259,6 +259,34 @@ class SynthesisTracker:
                 results['summary']['avg_weekly_minutes'] = total_weekly_min / len(results['progress'])
                 results['summary']['week_count'] = len(results['progress'])
 
+                # Calculate rolling averages
+                sorted_progress = sorted(results['progress'], key=lambda x: x.get('date', ''), reverse=True)
+
+                # Last 4 weeks average
+                last_4_weeks = sorted_progress[:4]
+                if last_4_weeks:
+                    last_4_weeks_minutes = sum(p.get('total_weekly_minutes', 0) for p in last_4_weeks)
+                    results['summary']['last_4_weeks_avg'] = last_4_weeks_minutes / len(last_4_weeks)
+                else:
+                    results['summary']['last_4_weeks_avg'] = 0
+
+                # Last 7 days calculation (from most recent week's daily data)
+                if sorted_progress and sorted_progress[0].get('daily_minutes'):
+                    daily_data = sorted_progress[0]['daily_minutes']
+                    last_7_days_total = sum(daily_data.values())
+                    results['summary']['last_7_days_total'] = last_7_days_total
+                    results['summary']['last_7_days_avg'] = last_7_days_total / 7
+                else:
+                    results['summary']['last_7_days_total'] = 0
+                    results['summary']['last_7_days_avg'] = 0
+
+                # Projection for current month (assuming 30 minutes/day target)
+                target_daily = 30
+                target_weekly = target_daily * 7
+                results['summary']['target_weekly_minutes'] = target_weekly
+                results['summary']['target_monthly_minutes'] = target_weekly * 4
+                results['summary']['current_pace_vs_target'] = (results['summary'].get('last_4_weeks_avg', 0) / target_weekly * 100) if target_weekly > 0 else 0
+
             # Save to file
             if save_to_file:
                 with open('synthesis_data.json', 'w') as f:
