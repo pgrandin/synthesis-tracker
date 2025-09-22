@@ -113,8 +113,14 @@ class SynthesisTracker:
             raw_email = msg_data[0][1]
             msg = email.message_from_bytes(raw_email)
 
-            # Extract content
-            content = {'html': None, 'text': None}
+            # Extract content and metadata
+            content = {
+                'html': None,
+                'text': None,
+                'date': msg.get('Date', ''),
+                'subject': self._decode_header(msg.get('Subject', ''))
+            }
+
             if msg.is_multipart():
                 for part in msg.walk():
                     ct = part.get_content_type()
@@ -205,10 +211,11 @@ class SynthesisTracker:
             for email_info in sessions[:20]:
                 content = self.fetch_email(email_info['id'])
                 if content:
+                    # Use the actual email date from the fetched content
                     parsed = self.parse_session(
                         content,
-                        email_info['subject'],
-                        email_info['date']
+                        content.get('subject', email_info['subject']),
+                        content.get('date', email_info['date'])
                     )
                     parsed['email_id'] = email_info['id']
                     results['sessions'].append(parsed)
@@ -222,10 +229,11 @@ class SynthesisTracker:
             for email_info in progress:
                 content = self.fetch_email(email_info['id'])
                 if content:
+                    # Use the actual email date from the fetched content
                     parsed = self.parse_progress(
                         content,
-                        email_info['subject'],
-                        email_info['date']
+                        content.get('subject', email_info['subject']),
+                        content.get('date', email_info['date'])
                     )
                     parsed['email_id'] = email_info['id']
                     results['progress'].append(parsed)
