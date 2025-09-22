@@ -280,12 +280,15 @@ class SynthesisTracker:
                     results['summary']['last_7_days_total'] = 0
                     results['summary']['last_7_days_avg'] = 0
 
-                # Projection for current month (assuming 30 minutes/day target)
-                target_daily = 30
-                target_weekly = target_daily * 7
+                # Projection for current month (realistic target based on historical data)
+                # Target: 120 min/week (~17 min/day), Stretch: 150 min/week (~21 min/day)
+                target_weekly = 120  # Realistic target based on Zoey's historical practice
+                stretch_weekly = 150  # Stretch goal for high-performing weeks
                 results['summary']['target_weekly_minutes'] = target_weekly
+                results['summary']['stretch_weekly_minutes'] = stretch_weekly
                 results['summary']['target_monthly_minutes'] = target_weekly * 4
                 results['summary']['current_pace_vs_target'] = (results['summary'].get('last_4_weeks_avg', 0) / target_weekly * 100) if target_weekly > 0 else 0
+                results['summary']['current_pace_vs_stretch'] = (results['summary'].get('last_4_weeks_avg', 0) / stretch_weekly * 100) if stretch_weekly > 0 else 0
 
             # Save to file
             if save_to_file:
