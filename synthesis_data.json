@@ -1,0 +1,496 @@
+{
+  "sessions": [
+    {
+      "subject": "Zoey's Synthesis Session: Mastering Math with Cosmic Flair!",
+      "date": "Tue, 24 Jun 2025 12:54:07 +0000",
+      "type": "session",
+      "topic": "Mastering Math with Cosmic Flair!",
+      "day": "Tuesday",
+      "time": "1:00pm",
+      "duration_minutes": 30.5,
+      "email_id": 11146
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Blasting Through Subtraction Challenges!",
+      "date": "Wed, 25 Jun 2025 13:22:37 +0000",
+      "type": "session",
+      "topic": "Blasting Through Subtraction Challenges!",
+      "day": "Wednesday",
+      "time": "2:14pm",
+      "duration_minutes": 14.3,
+      "email_id": 11154
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Adding Stars and Numbers!",
+      "date": "Wed, 25 Jun 2025 20:27:02 +0000",
+      "type": "session",
+      "topic": "Adding Stars and Numbers!",
+      "day": "Wednesday",
+      "time": "9:26pm",
+      "duration_minutes": 6.3,
+      "email_id": 11160
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Conquering Numbers and Ancient Math\r\n Mysteries!",
+      "date": "Fri, 27 Jun 2025 21:43:08 +0000",
+      "type": "session",
+      "topic": "Conquering Numbers and Ancient Math\r\n Mysteries!",
+      "day": "Friday",
+      "time": "9:58pm",
+      "duration_minutes": 37.0,
+      "email_id": 11169
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Mastering Splodges and Blasting\r\n Subtraction!",
+      "date": "Sat, 28 Jun 2025 15:53:34 +0000",
+      "type": "session",
+      "topic": "Mastering Splodges and Blasting\r\n Subtraction!",
+      "day": "Saturday",
+      "time": "4:18pm",
+      "duration_minutes": 28.5,
+      "email_id": 11177
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Math Mastery and Galactic Challenges!",
+      "date": "Sun, 29 Jun 2025 19:00:10 +0000",
+      "type": "session",
+      "topic": "Math Mastery and Galactic Challenges!",
+      "day": "Sunday",
+      "time": "7:19pm",
+      "duration_minutes": 36.3,
+      "email_id": 11183
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Cosmic Calculations and Prehistoric\r\n Problem-Solving!",
+      "date": "Mon, 30 Jun 2025 09:32:23 +0000",
+      "type": "session",
+      "topic": "Cosmic Calculations and Prehistoric\r\n Problem-Solving!",
+      "day": "Monday",
+      "time": "9:55am",
+      "duration_minutes": 33.5,
+      "email_id": 11187
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Unraveling Math Mysteries and Dynamic\r\n Discoveries!",
+      "date": "Tue, 1 Jul 2025 14:46:07 +0000",
+      "type": "session",
+      "topic": "Unraveling Math Mysteries and Dynamic\r\n Discoveries!",
+      "day": "Tuesday",
+      "time": "7:19am",
+      "duration_minutes": 25.8,
+      "email_id": 11205
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Math Mastery and Puzzle Power!",
+      "date": "Thu, 3 Jul 2025 18:10:02 +0000",
+      "type": "session",
+      "topic": "Math Mastery and Puzzle Power!",
+      "day": "Thursday",
+      "time": "6:48pm",
+      "duration_minutes": 32.7,
+      "email_id": 11224
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Cracking Codes and Dot Adventures!",
+      "date": "Wed, 9 Jul 2025 14:34:30 +0000",
+      "type": "session",
+      "topic": "Cracking Codes and Dot Adventures!",
+      "day": "Wednesday",
+      "time": "2:59pm",
+      "duration_minutes": 40.8,
+      "email_id": 11266
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Mastering Math Magic!",
+      "date": "Sat, 12 Jul 2025 18:28:54 +0000",
+      "type": "session",
+      "topic": "Mastering Math Magic!",
+      "day": "Saturday",
+      "time": "6:38pm",
+      "duration_minutes": 47.5,
+      "email_id": 11281
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Mastering Math Magic and Lizard Logic!",
+      "date": "Tue, 15 Jul 2025 17:10:53 +0000",
+      "type": "session",
+      "topic": "Mastering Math Magic and Lizard Logic!",
+      "day": "Tuesday",
+      "time": "5:10pm",
+      "duration_minutes": 51.0,
+      "email_id": 11298
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Mastering Pixels and Binary Magic!",
+      "date": "Wed, 16 Jul 2025 16:20:45 +0000",
+      "type": "session",
+      "topic": "Mastering Pixels and Binary Magic!",
+      "day": "Wednesday",
+      "time": "4:23pm",
+      "duration_minutes": 56.3,
+      "email_id": 11306
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Cracking the Code of Numbers!",
+      "date": "Thu, 17 Jul 2025 15:16:06 +0000",
+      "type": "session",
+      "topic": "Cracking the Code of Numbers!",
+      "day": "Thursday",
+      "time": "3:47pm",
+      "duration_minutes": 26.9,
+      "email_id": 11316
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Mastering Math Magic!",
+      "date": "Sat, 19 Jul 2025 20:22:39 +0000",
+      "type": "session",
+      "topic": "Mastering Math Magic!",
+      "day": "Saturday",
+      "time": "12:53pm",
+      "duration_minutes": 28.0,
+      "email_id": 11344
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Fraction Fun and Learning Triumphs!",
+      "date": "Sun, 20 Jul 2025 18:12:54 +0000",
+      "type": "session",
+      "topic": "Fraction Fun and Learning Triumphs!",
+      "day": "Sunday",
+      "time": "11:08am",
+      "duration_minutes": 2.3,
+      "email_id": 11351
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Math Adventures and Square Discoveries!",
+      "date": "Mon, 21 Jul 2025 00:06:07 +0000",
+      "type": "session",
+      "topic": "Math Adventures and Square Discoveries!",
+      "day": "Sunday",
+      "time": "4:22pm",
+      "duration_minutes": 40.8,
+      "email_id": 11353
+    },
+    {
+      "subject": "Zoey's Synthesis Session: From Dots to Digits!",
+      "date": "Tue, 22 Jul 2025 14:53:17 +0000",
+      "type": "session",
+      "topic": "From Dots to Digits!",
+      "day": "Tuesday",
+      "time": "7:16am",
+      "duration_minutes": 35.5,
+      "email_id": 11370
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Mastering Math Puzzles and Galactic\r\n Counting!",
+      "date": "Thu, 24 Jul 2025 00:58:25 +0000",
+      "type": "session",
+      "topic": "Mastering Math Puzzles and Galactic\r\n Counting!",
+      "day": "Wednesday",
+      "time": "5:08pm",
+      "duration_minutes": 48.3,
+      "email_id": 11405
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Cosmic Adventures & Ancient Numbers!",
+      "date": "Sat, 26 Jul 2025 21:33:20 +0000",
+      "type": "session",
+      "topic": "Cosmic Adventures & Ancient Numbers!",
+      "day": "Saturday",
+      "time": "2:02pm",
+      "duration_minutes": 28.0,
+      "email_id": 11445
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Cracking the Code of Egyptian Numbers!",
+      "date": "Tue, 29 Jul 2025 16:02:30 +0000",
+      "type": "session",
+      "topic": "Cracking the Code of Egyptian Numbers!",
+      "day": "Tuesday",
+      "time": "8:30am",
+      "duration_minutes": 31.5,
+      "email_id": 11475
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Mastering Math Magic!",
+      "date": "Fri, 1 Aug 2025 00:36:37 +0000",
+      "type": "session",
+      "topic": "Mastering Math Magic!",
+      "day": "Thursday",
+      "time": "5:02pm",
+      "duration_minutes": 33.8,
+      "email_id": 11502
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Smashing Success with Fractions!",
+      "date": "Sat, 2 Aug 2025 16:54:56 +0000",
+      "type": "session",
+      "topic": "Smashing Success with Fractions!",
+      "day": "Saturday",
+      "time": "9:54am",
+      "duration_minutes": 12.8,
+      "email_id": 11524
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Math Mastery and Galactic Adventures!",
+      "date": "Sat, 2 Aug 2025 19:36:55 +0000",
+      "type": "session",
+      "topic": "Math Mastery and Galactic Adventures!",
+      "day": "Saturday",
+      "time": "12:18pm",
+      "duration_minutes": 11.7,
+      "email_id": 11526
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Math Adventures and Detective\r\n Discoveries!",
+      "date": "Tue, 5 Aug 2025 00:40:11 +0000",
+      "type": "session",
+      "topic": "Math Adventures and Detective\r\n Discoveries!",
+      "day": "Monday",
+      "time": "4:48pm",
+      "duration_minutes": 32.8,
+      "email_id": 11554
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Number Ninja & Flocking Fun!",
+      "date": "Wed, 6 Aug 2025 01:22:17 +0000",
+      "type": "session",
+      "topic": "Number Ninja & Flocking Fun!",
+      "day": "Tuesday",
+      "time": "5:53pm",
+      "duration_minutes": 24.0,
+      "email_id": 11567
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Math Mysteries and Ancient Adventures!",
+      "date": "Wed, 6 Aug 2025 18:31:15 +0000",
+      "type": "session",
+      "topic": "Math Mysteries and Ancient Adventures!",
+      "day": "Wednesday",
+      "time": "10:20am",
+      "duration_minutes": 44.5,
+      "email_id": 11575
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Multiplication Mastery & Fraction Fun!",
+      "date": "Sun, 10 Aug 2025 00:22:54 +0000",
+      "type": "session",
+      "topic": "Multiplication Mastery & Fraction Fun!",
+      "day": "Saturday",
+      "time": "4:44pm",
+      "duration_minutes": 37.8,
+      "email_id": 11614
+    },
+    {
+      "subject": "Zoey's Synthesis Session: Fraction Fun and Triumph!",
+      "date": "Mon, 11 Aug 2025 23:05:11 +0000",
+      "type": "session",
+      "topic": "Fraction Fun and Triumph!",
+      "day": "Monday",
+      "time": "3:38pm",
+      "duration_minutes": 33.1,
+      "email_id": 11630
+    }
+  ],
+  "progress": [
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 30 Jun 2025 13:38:17 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 0,
+        "Monday": 0,
+        "Tuesday": 31,
+        "Wednesday": 34,
+        "Thursday": 0,
+        "Friday": 37,
+        "Saturday": 29
+      },
+      "total_weekly_minutes": 131,
+      "email_id": 11191
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 7 Jul 2025 13:33:17 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 37,
+        "Monday": 34,
+        "Tuesday": 26,
+        "Wednesday": 0,
+        "Thursday": 31,
+        "Friday": 0,
+        "Saturday": 0
+      },
+      "total_weekly_minutes": 128,
+      "email_id": 11240
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 14 Jul 2025 13:32:29 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 0,
+        "Monday": 0,
+        "Tuesday": 0,
+        "Wednesday": 41,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 47
+      },
+      "total_weekly_minutes": 88,
+      "email_id": 11292
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 21 Jul 2025 13:17:35 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 0,
+        "Monday": 0,
+        "Tuesday": 51,
+        "Wednesday": 56,
+        "Thursday": 27,
+        "Friday": 0,
+        "Saturday": 28
+      },
+      "total_weekly_minutes": 162,
+      "email_id": 11359
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 28 Jul 2025 13:29:33 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 43,
+        "Monday": 0,
+        "Tuesday": 36,
+        "Wednesday": 48,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 28
+      },
+      "total_weekly_minutes": 155,
+      "email_id": 11460
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 4 Aug 2025 13:27:20 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 0,
+        "Monday": 0,
+        "Tuesday": 32,
+        "Wednesday": 0,
+        "Thursday": 34,
+        "Friday": 0,
+        "Saturday": 39
+      },
+      "total_weekly_minutes": 105,
+      "email_id": 11546
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 11 Aug 2025 13:25:20 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 0,
+        "Monday": 32,
+        "Tuesday": 23,
+        "Wednesday": 45,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 38
+      },
+      "total_weekly_minutes": 138,
+      "email_id": 11626
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 18 Aug 2025 13:24:45 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 0,
+        "Monday": 33,
+        "Tuesday": 0,
+        "Wednesday": 39,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 0
+      },
+      "total_weekly_minutes": 72,
+      "email_id": 11756
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 25 Aug 2025 13:23:02 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 0,
+        "Monday": 0,
+        "Tuesday": 0,
+        "Wednesday": 71,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 0
+      },
+      "total_weekly_minutes": 71,
+      "email_id": 11861
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 1 Sep 2025 13:13:08 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 0,
+        "Monday": 29,
+        "Tuesday": 28,
+        "Wednesday": 0,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 0
+      },
+      "total_weekly_minutes": 57,
+      "email_id": 11960
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 8 Sep 2025 13:22:12 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 38,
+        "Monday": 0,
+        "Tuesday": 0,
+        "Wednesday": 0,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 0
+      },
+      "total_weekly_minutes": 38,
+      "email_id": 12041
+    },
+    {
+      "subject": "Zoey's progress with Synthesis Tutor",
+      "date": "Mon, 15 Sep 2025 13:20:59 +0000",
+      "type": "progress",
+      "daily_minutes": {
+        "Sunday": 7,
+        "Monday": 0,
+        "Tuesday": 0,
+        "Wednesday": 0,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 0
+      },
+      "total_weekly_minutes": 7,
+      "email_id": 12115
+    }
+  ],
+  "summary": {
+    "total_session_minutes": 912.2999999999998,
+    "avg_session_minutes": 31.458620689655167,
+    "session_count": 29,
+    "total_weekly_minutes": 1152,
+    "avg_weekly_minutes": 96.0,
+    "week_count": 12
+  }
+}
