@@ -203,7 +203,8 @@ class SynthesisTracker:
             results = {
                 'sessions': [],
                 'progress': [],
-                'summary': {}
+                'summary': {},
+                'last_updated': datetime.now().isoformat()
             }
 
             # Process all session emails
