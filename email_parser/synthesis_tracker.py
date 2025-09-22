@@ -281,9 +281,9 @@ class SynthesisTracker:
                     results['summary']['last_7_days_avg'] = 0
 
                 # Projection for current month (realistic target based on historical data)
-                # Target: 120 min/week (~17 min/day), Stretch: 150 min/week (~21 min/day)
-                target_weekly = 120  # Realistic target based on Zoey's historical practice
-                stretch_weekly = 150  # Stretch goal for high-performing weeks
+                # Target: 60 min/week (~8.5 min/day), Stretch: 80 min/week (~11.5 min/day)
+                target_weekly = 60  # Realistic target based on recent practice patterns
+                stretch_weekly = 80  # Stretch goal for good weeks
                 results['summary']['target_weekly_minutes'] = target_weekly
                 results['summary']['stretch_weekly_minutes'] = stretch_weekly
                 results['summary']['target_monthly_minutes'] = target_weekly * 4
