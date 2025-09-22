@@ -11,6 +11,11 @@ on:
     paths:
       - '.github/workflows/update_tracker.yml'
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
