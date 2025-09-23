@@ -311,26 +311,22 @@ class SynthesisTracker:
         """Generate Home Assistant compatible metrics file"""
         from datetime import datetime, timedelta
 
-        # Calculate 4-week daily average
-        today = datetime.now()
-        four_weeks_ago = today - timedelta(weeks=4)
+        # Calculate 4-week daily average from the most recent 4 weeks of data
+        # Take the 4 most recent weeks from progress data
+        progress_data = results.get('progress', [])
 
         total_minutes = 0
         days_with_activity = 0
 
-        for week in results.get('progress', []):
-            if 'week_ending' in week:
-                try:
-                    week_date = datetime.strptime(week['week_ending'], '%B %d, %Y')
-                except:
-                    continue
+        # Sort by date and take the 4 most recent weeks
+        sorted_progress = sorted(progress_data, key=lambda x: x.get('email_id', 0), reverse=True)[:4]
 
-                if week_date >= four_weeks_ago:
-                    daily_minutes = week.get('daily_minutes', {})
-                    for day, minutes in daily_minutes.items():
-                        if minutes > 0:
-                            total_minutes += minutes
-                            days_with_activity += 1
+        for week in sorted_progress:
+            daily_minutes = week.get('daily_minutes', {})
+            for day, minutes in daily_minutes.items():
+                if minutes > 0:
+                    total_minutes += minutes
+                    days_with_activity += 1
 
         avg_daily_4weeks = round(total_minutes / days_with_activity, 1) if days_with_activity > 0 else 0
 
