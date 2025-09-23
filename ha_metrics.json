@@ -1,5 +1,5 @@
 {
-  "average_daily_minutes_4weeks": 0,
+  "average_daily_minutes_4weeks": 34.6,
   "total_sessions": 29,
   "total_minutes": 912.2999999999998,
   "average_session_minutes": 31.5,
@@ -14,5 +14,5 @@
     "time": "1:00pm",
     "date": "Tue, 24 Jun 2025 12:54:07 +0000"
   },
-  "last_updated": "2025-09-23T00:41:49.596877"
+  "last_updated": "2025-09-23T00:59:21.031325"
 }
