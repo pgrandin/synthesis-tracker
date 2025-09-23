@@ -12,6 +12,13 @@ rest:
         state_class: measurement
         icon: mdi:timer-outline
 
+      - name: "Synthesis Average Daily Minutes (2 weeks)"
+        unique_id: synthesis_avg_daily_2weeks
+        value_template: "{{ value_json.average_daily_minutes_2weeks }}"
+        unit_of_measurement: "min"
+        state_class: measurement
+        icon: mdi:timer
+
       - name: "Synthesis Total Sessions"
         unique_id: synthesis_total_sessions
         value_template: "{{ value_json.total_sessions }}"

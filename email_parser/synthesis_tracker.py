@@ -311,24 +311,35 @@ class SynthesisTracker:
         """Generate Home Assistant compatible metrics file"""
         from datetime import datetime, timedelta
 
-        # Calculate 4-week daily average from the most recent 4 weeks of data
-        # Take the 4 most recent weeks from progress data
+        # Calculate daily averages from the most recent weeks of data
         progress_data = results.get('progress', [])
 
-        total_minutes = 0
-        days_with_activity = 0
+        # Sort by date (most recent first)
+        sorted_progress = sorted(progress_data, key=lambda x: x.get('email_id', 0), reverse=True)
 
-        # Sort by date and take the 4 most recent weeks
-        sorted_progress = sorted(progress_data, key=lambda x: x.get('email_id', 0), reverse=True)[:4]
-
-        for week in sorted_progress:
+        # Calculate 4-week daily average
+        total_4week = 0
+        days_4week = 0
+        for week in sorted_progress[:4]:
             daily_minutes = week.get('daily_minutes', {})
             for day, minutes in daily_minutes.items():
                 if minutes > 0:
-                    total_minutes += minutes
-                    days_with_activity += 1
+                    total_4week += minutes
+                    days_4week += 1
 
-        avg_daily_4weeks = round(total_minutes / days_with_activity, 1) if days_with_activity > 0 else 0
+        avg_daily_4weeks = round(total_4week / days_4week, 1) if days_4week > 0 else 0
+
+        # Calculate 2-week daily average
+        total_2week = 0
+        days_2week = 0
+        for week in sorted_progress[:2]:
+            daily_minutes = week.get('daily_minutes', {})
+            for day, minutes in daily_minutes.items():
+                if minutes > 0:
+                    total_2week += minutes
+                    days_2week += 1
+
+        avg_daily_2weeks = round(total_2week / days_2week, 1) if days_2week > 0 else 0
 
         # Get latest session
         latest_session = None
@@ -347,12 +358,14 @@ class SynthesisTracker:
         # Create HA metrics
         ha_metrics = {
             'average_daily_minutes_4weeks': avg_daily_4weeks,
+            'average_daily_minutes_2weeks': avg_daily_2weeks,
             'total_sessions': summary.get('session_count', 0),
             'total_minutes': summary.get('total_session_minutes', 0),
             'average_session_minutes': round(summary.get('avg_session_minutes', 0), 1),
             'last_7_days_total': summary.get('last_7_days_total', 0),
             'last_7_days_average': round(summary.get('last_7_days_avg', 0), 1),
             'last_4_weeks_average_weekly': round(summary.get('last_4_weeks_avg', 0), 1),
+            'last_2_weeks_average_weekly': round(sum(week.get('total_weekly_minutes', 0) for week in sorted_progress[:2]) / 2, 1) if len(sorted_progress) >= 2 else 0,
             'current_pace_vs_target': round(summary.get('current_pace_vs_target', 0), 1),
             'latest_session': latest_session,
             'last_updated': datetime.now().isoformat()
@@ -364,6 +377,7 @@ class SynthesisTracker:
 
         print(f"✓ Saved ha_metrics.json")
         print(f"  - 4-week daily average: {ha_metrics['average_daily_minutes_4weeks']} minutes")
+        print(f"  - 2-week daily average: {ha_metrics['average_daily_minutes_2weeks']} minutes")
 
     def print_summary(self, results):
         """Print activity summary"""
