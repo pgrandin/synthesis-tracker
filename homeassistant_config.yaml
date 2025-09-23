@@ -1,0 +1,102 @@
+# Home Assistant configuration for Synthesis Tracker
+# Add this to your configuration.yaml file
+
+rest:
+  - resource: https://pgrandin.github.io/synthesis-tracker/ha_metrics.json
+    scan_interval: 3600  # Update every hour
+    sensor:
+      - name: "Synthesis Average Daily Minutes (4 weeks)"
+        unique_id: synthesis_avg_daily_4weeks
+        value_template: "{{ value_json.average_daily_minutes_4weeks }}"
+        unit_of_measurement: "min"
+        state_class: measurement
+        icon: mdi:timer-outline
+
+      - name: "Synthesis Total Sessions"
+        unique_id: synthesis_total_sessions
+        value_template: "{{ value_json.total_sessions }}"
+        unit_of_measurement: "sessions"
+        state_class: total_increasing
+        icon: mdi:counter
+
+      - name: "Synthesis Total Minutes"
+        unique_id: synthesis_total_minutes
+        value_template: "{{ value_json.total_minutes }}"
+        unit_of_measurement: "min"
+        state_class: total_increasing
+        icon: mdi:clock-outline
+
+      - name: "Synthesis Last 7 Days Average"
+        unique_id: synthesis_last_7_days_avg
+        value_template: "{{ value_json.last_7_days_average }}"
+        unit_of_measurement: "min"
+        icon: mdi:calendar-week
+
+      - name: "Synthesis Last 7 Days Total"
+        unique_id: synthesis_last_7_days_total
+        value_template: "{{ value_json.last_7_days_total }}"
+        unit_of_measurement: "min"
+        icon: mdi:calendar-week-outline
+
+      - name: "Synthesis Average Session Minutes"
+        unique_id: synthesis_avg_session_minutes
+        value_template: "{{ value_json.average_session_minutes }}"
+        unit_of_measurement: "min"
+        icon: mdi:timer-play
+
+      - name: "Synthesis Pace vs Target"
+        unique_id: synthesis_pace_vs_target
+        value_template: "{{ value_json.current_pace_vs_target }}"
+        unit_of_measurement: "%"
+        icon: mdi:target
+
+      - name: "Synthesis Latest Session Topic"
+        unique_id: synthesis_latest_topic
+        value_template: "{{ value_json.latest_session.topic if value_json.latest_session else 'No sessions yet' }}"
+        icon: mdi:book-open-variant
+
+      - name: "Synthesis Latest Session Duration"
+        unique_id: synthesis_latest_duration
+        value_template: "{{ value_json.latest_session.duration_minutes if value_json.latest_session else 0 }}"
+        unit_of_measurement: "min"
+        icon: mdi:timer-sand
+
+      - name: "Synthesis Last Updated"
+        unique_id: synthesis_last_updated
+        value_template: "{{ value_json.last_updated }}"
+        device_class: timestamp
+        icon: mdi:update
+
+# Optional: Create a template sensor that provides a human-readable summary
+template:
+  - sensor:
+      - name: "Synthesis Weekly Summary"
+        unique_id: synthesis_weekly_summary
+        state: >
+          {% set avg = states('sensor.synthesis_average_daily_minutes_4_weeks') | float(0) %}
+          {% set last7 = states('sensor.synthesis_last_7_days_average') | float(0) %}
+          {% set pace = states('sensor.synthesis_pace_vs_target') | float(0) %}
+          {{ avg | round(1) }} min/day avg ({{ pace | round(0) }}% of target)
+        attributes:
+          daily_average_4weeks: "{{ states('sensor.synthesis_average_daily_minutes_4_weeks') }} min"
+          last_7_days: "{{ states('sensor.synthesis_last_7_days_average') }} min/day"
+          total_sessions: "{{ states('sensor.synthesis_total_sessions') }}"
+          latest_topic: "{{ states('sensor.synthesis_latest_session_topic') }}"
+          pace_vs_target: "{{ states('sensor.synthesis_pace_vs_target') }}%"
+
+# Example Lovelace card configuration
+# Add this to your dashboard:
+#
+# type: entities
+# title: Synthesis Tutor Progress
+# entities:
+#   - entity: sensor.synthesis_average_daily_minutes_4_weeks
+#     name: 4-Week Daily Average
+#   - entity: sensor.synthesis_last_7_days_average
+#     name: Last 7 Days Average
+#   - entity: sensor.synthesis_pace_vs_target
+#     name: Progress vs Target
+#   - entity: sensor.synthesis_total_sessions
+#     name: Total Sessions
+#   - entity: sensor.synthesis_latest_session_topic
+#     name: Latest Session

@@ -59,6 +59,7 @@ jobs:
         # Copy dashboard and data
         cp static_dashboard.html docs/index.html
         cp email_parser/synthesis_data.json docs/
+        cp email_parser/ha_metrics.json docs/
 
         # Update dashboard to use relative path
         sed -i "s|'synthesis_data.json'|'./synthesis_data.json'|g" docs/index.html

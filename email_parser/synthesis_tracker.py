@@ -296,6 +296,9 @@ class SynthesisTracker:
                     json.dump(results, f, indent=2)
                 print(f"\n✓ Saved to synthesis_data.json")
 
+                # Generate Home Assistant metrics file
+                self.generate_ha_metrics(results)
+
             # Print summary
             self.print_summary(results)
 
@@ -303,6 +306,68 @@ class SynthesisTracker:
 
         finally:
             self.disconnect()
+
+    def generate_ha_metrics(self, results):
+        """Generate Home Assistant compatible metrics file"""
+        from datetime import datetime, timedelta
+
+        # Calculate 4-week daily average
+        today = datetime.now()
+        four_weeks_ago = today - timedelta(weeks=4)
+
+        total_minutes = 0
+        days_with_activity = 0
+
+        for week in results.get('progress', []):
+            if 'week_ending' in week:
+                try:
+                    week_date = datetime.strptime(week['week_ending'], '%B %d, %Y')
+                except:
+                    continue
+
+                if week_date >= four_weeks_ago:
+                    daily_minutes = week.get('daily_minutes', {})
+                    for day, minutes in daily_minutes.items():
+                        if minutes > 0:
+                            total_minutes += minutes
+                            days_with_activity += 1
+
+        avg_daily_4weeks = round(total_minutes / days_with_activity, 1) if days_with_activity > 0 else 0
+
+        # Get latest session
+        latest_session = None
+        if results.get('sessions'):
+            latest = results['sessions'][0]
+            latest_session = {
+                'topic': latest.get('topic', 'Unknown'),
+                'duration_minutes': latest.get('duration_minutes', 0),
+                'day': latest.get('day', 'Unknown'),
+                'time': latest.get('time', 'Unknown'),
+                'date': latest.get('date', '')
+            }
+
+        summary = results.get('summary', {})
+
+        # Create HA metrics
+        ha_metrics = {
+            'average_daily_minutes_4weeks': avg_daily_4weeks,
+            'total_sessions': summary.get('session_count', 0),
+            'total_minutes': summary.get('total_session_minutes', 0),
+            'average_session_minutes': round(summary.get('avg_session_minutes', 0), 1),
+            'last_7_days_total': summary.get('last_7_days_total', 0),
+            'last_7_days_average': round(summary.get('last_7_days_avg', 0), 1),
+            'last_4_weeks_average_weekly': round(summary.get('last_4_weeks_avg', 0), 1),
+            'current_pace_vs_target': round(summary.get('current_pace_vs_target', 0), 1),
+            'latest_session': latest_session,
+            'last_updated': datetime.now().isoformat()
+        }
+
+        # Save HA metrics file
+        with open('ha_metrics.json', 'w') as f:
+            json.dump(ha_metrics, f, indent=2)
+
+        print(f"✓ Saved ha_metrics.json")
+        print(f"  - 4-week daily average: {ha_metrics['average_daily_minutes_4weeks']} minutes")
 
     def print_summary(self, results):
         """Print activity summary"""
