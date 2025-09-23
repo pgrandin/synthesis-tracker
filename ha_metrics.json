@@ -1,0 +1,18 @@
+{
+  "average_daily_minutes_4weeks": 0,
+  "total_sessions": 29,
+  "total_minutes": 912.2999999999998,
+  "average_session_minutes": 31.5,
+  "last_7_days_total": 38,
+  "last_7_days_average": 5.4,
+  "last_4_weeks_average_weekly": 100.5,
+  "current_pace_vs_target": 167.5,
+  "latest_session": {
+    "topic": "Mastering Math with Cosmic Flair!",
+    "duration_minutes": 30.5,
+    "day": "Tuesday",
+    "time": "1:00pm",
+    "date": "Tue, 24 Jun 2025 12:54:07 +0000"
+  },
+  "last_updated": "2025-09-23T00:32:40.511385"
+}
