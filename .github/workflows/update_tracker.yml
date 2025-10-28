@@ -1,9 +1,9 @@
 name: Update Synthesis Tracker
 
 on:
-  schedule:
-    # Run every 6 hours
-    - cron: '0 */6 * * *'
+  # schedule:
+    # # Run every 6 hours
+    # - cron: '0 */6 * * *'
   workflow_dispatch:  # Allow manual trigger
   push:
     branches:
